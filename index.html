@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>薛柏良の秘密档案</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 30%, #fbc2eb 60%, #a18cd1 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 8s ease infinite;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* 彩虹飘带 */
+        .rainbow-ribbon {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #ff0000, #ff8800, #ffff00, #00ff00, #0088ff, #8800ff, #ff0088);
+            background-size: 200% 100%;
+            animation: rainbowMove 3s linear infinite;
+            z-index: 999;
+        }
+        @keyframes rainbowMove {
+            0% {
+                background-position: 0% 0%;
+            }
+            100% {
+                background-position: 200% 0%;
+            }
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 48px;
+            padding: 40px 35px 50px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25), 0 0 0 2px rgba(255, 255, 255, 0.3) inset;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.01);
+        }
+
+        .header-emoji {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 6px;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+        @keyframes wiggle {
+            0%,
+            100% {
+                transform: rotate(-5deg) scale(1);
+            }
+            50% {
+                transform: rotate(5deg) scale(1.1);
+            }
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b6b, #ff9f43, #feca57, #48dbfb, #a29bfe, #fd79a8);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradText 4s ease infinite;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+        @keyframes gradText {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #5f3b6e;
+            font-weight: 600;
+            background: rgba(255, 215, 0, 0.2);
+            display: inline-block;
+            padding: 6px 28px;
+            border-radius: 40px;
+            margin-bottom: 28px;
+            border: 2px dashed #d63384;
+            letter-spacing: 2px;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 32px;
+            padding: 24px 20px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(214, 51, 132, 0.2);
+            box-shadow: 0 8px 32px rgba(214, 51, 132, 0.08);
+        }
+        .profile-card .name {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2d1b3d;
+        }
+        .profile-card .name span {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .profile-card .badge {
+            display: inline-block;
+            margin-top: 8px;
+            background: #ff6b81;
+            color: #fff;
+            font-weight: 700;
+            padding: 6px 24px;
+            border-radius: 40px;
+            font-size: 18px;
+            letter-spacing: 2px;
+            animation: pulse 1.5s ease-in-out infinite;
+            box-shadow: 0 4px 20px rgba(255, 107, 129, 0.4);
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.06);
+            }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 16px 0 10px;
+            flex-wrap: wrap;
+        }
+        .stats .stat-item {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 8px 22px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: #4a2c5a;
+            border: 1px solid rgba(214, 51, 132, 0.15);
+            font-size: 15px;
+        }
+        .stats .stat-item em {
+            font-style: normal;
+            color: #d63384;
+        }
+
+        /* 按钮网格 */
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin: 28px 0 22px;
+        }
+        .btn {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: #fff;
+            border: none;
+            padding: 16px 8px;
+            border-radius: 60px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 24px rgba(245, 87, 108, 0.35);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .btn:hover::after {
+            opacity: 1;
+        }
+        .btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 40px rgba(245, 87, 108, 0.5);
+        }
+        .btn:active {
+            transform: scale(0.94);
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            box-shadow: 0 6px 24px rgba(79, 172, 254, 0.35);
+        }
+        .btn-secondary:hover {
+            box-shadow: 0 12px 40px rgba(79, 172, 254, 0.5);
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #f6d365, #fda085);
+            box-shadow: 0 6px 24px rgba(253, 160, 133, 0.35);
+        }
+        .btn-gold:hover {
+            box-shadow: 0 12px 40px rgba(253, 160, 133, 0.5);
+        }
+        .btn-purple {
+            background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+            box-shadow: 0 6px 24px rgba(161, 140, 209, 0.35);
+        }
+        .btn-purple:hover {
+            box-shadow: 0 12px 40px rgba(161, 140, 209, 0.5);
+        }
+        .btn-green {
+            background: linear-gradient(135deg, #56ab2f, #a8e063);
+            box-shadow: 0 6px 24px rgba(86, 171, 47, 0.35);
+        }
+        .btn-green:hover {
+            box-shadow: 0 12px 40px rgba(86, 171, 47, 0.5);
+        }
+
+        .btn .icon {
+            font-size: 22px;
+        }
+
+        /* 弹窗样式 (自定义) */
+        .custom-alert-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+            padding: 20px;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .custom-alert {
+            max-width: 480px;
+            width: 100%;
+            background: #fff;
+            border-radius: 40px;
+            padding: 36px 32px 32px;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
+            border: 3px solid #fbc2eb;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+        .custom-alert::before {
+            content: '🌈';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 80px;
+            opacity: 0.12;
+            transform: rotate(20deg);
+        }
+        @keyframes popIn {
+            0% {
+                transform: scale(0.5) rotate(-6deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+        .custom-alert .alert-emoji {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .custom-alert h2 {
+            font-size: 28px;
+            color: #2d1b3d;
+            margin-bottom: 12px;
+        }
+        .custom-alert p {
+            font-size: 18px;
+            color: #4a2c5a;
+            line-height: 1.6;
+            margin-bottom: 22px;
+            padding: 0 6px;
+        }
+        .custom-alert .alert-btn {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: #fff;
+            border: none;
+            padding: 14px 44px;
+            border-radius: 60px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 6px 24px rgba(245, 87, 108, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .custom-alert .alert-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 36px rgba(245, 87, 108, 0.45);
+        }
+        .custom-alert .alert-btn:active {
+            transform: scale(0.94);
+        }
+
+        /* 浮动小彩虹 */
+        .float-rainbow {
+            position: fixed;
+            font-size: 28px;
+            pointer-events: none;
+            z-index: 9998;
+            animation: floatUp 3s ease-out forwards;
+        }
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) rotate(40deg) scale(0.2);
+            }
+        }
+
+        /* 底部 */
+        .footer {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #7a5a8a;
+            opacity: 0.7;
+            letter-spacing: 1px;
+            border-top: 2px dashed rgba(214, 51, 132, 0.15);
+            padding-top: 18px;
+        }
+        .footer .heart {
+            color: #ff6b81;
+            animation: heartbeat 1.2s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes heartbeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* 响应式 */
+        @media (max-width: 500px) {
+            .container {
+                padding: 28px 18px 34px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            .btn-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+            .btn {
+                font-size: 15px;
+                padding: 14px 6px;
+            }
+            .stats {
+                gap: 12px;
+            }
+            .stats .stat-item {
+                font-size: 13px;
+                padding: 6px 14px;
+            }
+            .custom-alert {
+                padding: 28px 18px 24px;
+            }
+            .custom-alert h2 {
+                font-size: 22px;
+            }
+        }
+
+        /* 大量彩虹粒子 */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9997;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translateY(-20px) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(110vh) rotate(720deg) scale(0.3);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="rainbow-ribbon"></div>
+
+    <div class="container" id="app">
+        <span class="header-emoji">🏳️‍🌈</span>
+        <h1>薛柏良 · 彩虹档案</h1>
+        <div class="subtitle">✨ 全宇宙最闪耀的 Gay 仔 ✨</div>
+
+        <div class="profile-card">
+            <div class="name">👨‍❤️‍👨 <span>薛柏良</span> 👨‍❤️‍👨</div>
+            <div class="badge">🌈 已出柜 · 骄傲月终身会员 🌈</div>
+            <div class="stats">
+                <span class="stat-item">💖 男友力 <em>MAX</em></span>
+                <span class="stat-item">🎨 彩虹指数 <em>∞</em></span>
+                <span class="stat-item">💅 精致度 <em>10000%</em></span>
+            </div>
+        </div>
+
+        <div class="btn-grid">
+            <button class="btn" data-msg="🌈 薛柏良：『我弯了，你呢？』">
+                <span class="icon">🏳️‍🌈</span> 出柜宣言
+            </button>
+            <button class="btn btn-secondary" data-msg="💅 薛柏良今天又做了美甲，太gay了吧！">
+                <span class="icon">💅</span> 美甲暴击
+            </button>
+            <button class="btn btn-gold" data-msg="🕺 薛柏良的舞姿，gay里gay气但超迷人！">
+                <span class="icon">🕺</span> 舞姿鉴赏
+            </button>
+            <button class="btn btn-purple" data-msg="👬 薛柏良和他的男朋友又在撒狗粮了！">
+                <span class="icon">👬</span> 狗粮现场
+            </button>
+            <button class="btn btn-green" data-msg="🎤 薛柏良唱《彩虹》比原唱还gay！">
+                <span class="icon">🎤</span> 彩虹KTV
+            </button>
+            <button class="btn" data-msg="💖 薛柏良：『我的性取向是… 好看的人！』">
+                <span class="icon">💖</span> 取向宣言
+            </button>
+        </div>
+
+        <!-- 额外整活按钮 -->
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 6px;">
+            <button class="btn btn-secondary" style="flex:1; min-width:120px;" id="rainbowBtn">
+                <span class="icon">🌈</span> 下彩虹雨
+            </button>
+            <button class="btn btn-gold" style="flex:1; min-width:120px;" id="counterBtn">
+                <span class="icon">🔢</span> 点击计数
+            </button>
+            <button class="btn btn-purple" style="flex:1; min-width:120px;" id="surpriseBtn">
+                <span class="icon">🎁</span> 惊喜盲盒
+            </button>
+        </div>
+
+        <div style="margin: 18px 0 6px; font-size: 22px; font-weight: 700; color: #d63384;" id="clickCounter">
+            🌈 已认证薛柏良是gay：<span id="countDisplay">0</span> 次
+        </div>
+
+        <div class="footer">
+            <span class="heart">❤️</span> 本页面已获得薛柏良本人（被迫）同意 <span class="heart">❤️</span><br/>
+            <span style="font-size:13px; opacity:0.6;">🏳️‍🌈 骄傲无罪，快乐加倍 🏳️‍🌈</span>
+        </div>
+    </div>
+
+    <div class="confetti-container" id="confettiContainer"></div>
+
+    <script>
+        (function() {
+            let count = 0;
+            const countDisplay = document.getElementById('countDisplay');
+
+            // 自定义弹窗
+            function showAlert(emoji, title, message) {
+                const overlay = document.createElement('div');
+                overlay.className = 'custom-alert-overlay';
+                overlay.innerHTML = `
+                    <div class="custom-alert">
+                        <span class="alert-emoji">${emoji}</span>
+                        <h2>${title}</h2>
+                        <p>${message}</p>
+                        <button class="alert-btn">🤣 好的，我信了</button>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+
+                const btn = overlay.querySelector('.alert-btn');
+                btn.addEventListener('click', function() {
+                    overlay.remove();
+                    // 点击弹窗按钮也增加计数
+                    incrementCount();
+                    spawnFloatingEmoji('🌈');
+                });
+
+                // 点击遮罩也可关闭
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === overlay) {
+                        overlay.remove();
+                        incrementCount();
+                        spawnFloatingEmoji('🌈');
+                    }
+                });
+            }
+
+            // 增加计数
+            function incrementCount() {
+                count++;
+                countDisplay.textContent = count;
+                // 抖动一下数字
+                countDisplay.style.transform = 'scale(1.4)';
+                setTimeout(() => {
+                    countDisplay.style.transform = 'scale(1)';
+                }, 200);
+            }
+
+            // 浮动表情
+            function spawnFloatingEmoji(emoji) {
+                const el = document.createElement('div');
+                el.className = 'float-rainbow';
+                el.textContent = emoji || '🌈';
+                el.style.left = (Math.random() * 80 + 10) + '%';
+                el.style.top = (Math.random() * 60 + 20) + '%';
+                el.style.fontSize = (Math.random() * 30 + 20) + 'px';
+                document.body.appendChild(el);
+                setTimeout(() => el.remove(), 3000);
+            }
+
+            // 彩虹雨 (confetti)
+            function startRainbowRain() {
+                const container = document.getElementById('confettiContainer');
+                const colors = ['#ff0000', '#ff8800', '#ffff00', '#00ff00', '#0088ff', '#8800ff', '#ff0088', '#f093fb',
+                    '#f5576c', '#4facfe', '#f6d365'
+                ];
+                for (let i = 0; i < 80; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 6) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 6) + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    confetti.style.animationDelay = (Math.random() * 1.5) + 's';
+                    container.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 5000);
+                }
+                // 同时弹窗
+                showAlert('🌈', '🌈 彩虹雨来啦！', '薛柏良看到彩虹雨开心得转圈圈，gay力全开！');
+                incrementCount();
+            }
+
+            // 惊喜盲盒
+            function surpriseBox() {
+                const msgs = [
+                    ['🎁', '恭喜！', '薛柏良承认他最喜欢《Call Me By Your Name》！'],
+                    ['🦄', '哇！', '薛柏良的衣柜里全是彩虹色！'],
+                    ['✨', '天哪！', '薛柏良的gay达已经爆表了！'],
+                    ['🎉', '不得了！', '薛柏良刚刚跳了一支碧昂丝的舞！'],
+                    ['💎', '震惊！', '薛柏良的男朋友比他还gay！'],
+                    ['🍑', '我的天！', '薛柏良最爱吃桃子，你懂的～'],
+                    ['🔥', '炸了！', '薛柏良的彩虹旗插满了整个房间！'],
+                ];
+                const pick = msgs[Math.floor(Math.random() * msgs.length)];
+                showAlert(pick[0], pick[1], pick[2]);
+                incrementCount();
+                // 额外撒一点
+                for (let i = 0; i < 10; i++) {
+                    setTimeout(() => spawnFloatingEmoji(['🎉', '✨', '🌈', '💖', '🦄'][Math.floor(Math.random() * 5)]), i *
+                    100);
+                }
+            }
+
+            // 绑定所有普通按钮
+            document.querySelectorAll('.btn-grid .btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    const msg = this.getAttribute('data-msg') || '薛柏良是gay！';
+                    // 随机标题
+                    const titles = ['🌈 彩虹认证', '💅 石锤了', '🏳️‍🌈 骄傲时刻', '👬 官方实锤', '💖 不得不爱'];
+                    const title = titles[Math.floor(Math.random() * titles.length)];
+                    const emojis = ['🌈', '💅', '🏳️‍🌈', '👬', '💖', '🎉', '✨'];
+                    const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    showAlert(emoji, title, msg);
+                    incrementCount();
+                    spawnFloatingEmoji('🌈');
+                });
+            });
+
+            // 彩虹雨按钮
+            document.getElementById('rainbowBtn').addEventListener('click', function() {
+                startRainbowRain();
+                // 额外计数
+                for (let i = 0; i < 3; i++) {
+                    setTimeout(() => incrementCount(), i * 300);
+                }
+            });
+
+            // 计数按钮
+            document.getElementById('counterBtn').addEventListener('click', function() {
+                showAlert('🔢', '计数 +1', '薛柏良是gay的事实又加深了一次！');
+                incrementCount();
+                spawnFloatingEmoji('💖');
+            });
+
+            // 惊喜盲盒
+            document.getElementById('surpriseBtn').addEventListener('click', function() {
+                surpriseBox();
+            });
+
+            // 初始趣味弹窗（延迟一秒）
+            setTimeout(() => {
+                showAlert('🏳️‍🌈', '欢迎来到薛柏良的彩虹世界！',
+                    '点任何按钮都会增加「薛柏良是gay」的认证次数，试试看吧！');
+                // 自动增加一次计数
+                incrementCount();
+                spawnFloatingEmoji('🌈');
+                spawnFloatingEmoji('💖');
+            }, 600);
+
+            // 页面任何地方点击也增加计数（恶搞）
+            document.addEventListener('click', function(e) {
+                // 但是不要干扰按钮本身的点击，用标记
+                if (e.target.closest('.btn') || e.target.closest('.custom-alert-overlay') || e.target.closest(
+                        '.custom-alert')) {
+                    return;
+                }
+                // 随机概率 20% 触发
+                if (Math.random() < 0.2) {
+                    incrementCount();
+                    spawnFloatingEmoji('🌈');
+                }
+            });
+
+            // 鼠标移动偶尔出现彩虹
+            let moveTimer;
+            document.addEventListener('mousemove', function(e) {
+                if (Math.random() < 0.03) {
+                    const emoji = ['🌈', '💖', '✨', '🏳️‍🌈', '💅'][Math.floor(Math.random() * 5)];
+                    const el = document.createElement('div');
+                    el.className = 'float-rainbow';
+                    el.textContent = emoji;
+                    el.style.left = e.clientX + 'px';
+                    el.style.top = e.clientY + 'px';
+                    el.style.fontSize = (Math.random() * 20 + 16) + 'px';
+                    el.style.pointerEvents = 'none';
+                    document.body.appendChild(el);
+                    setTimeout(() => el.remove(), 2000);
+                }
+            });
+
+            console.log('🌈 薛柏良是gay！ 已获得本人（被迫）同意 🏳️‍🌈');
+        })();
+    </script>
+
+</body>
+</html>
